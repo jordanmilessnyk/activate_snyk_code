@@ -9,6 +9,8 @@ BASE_URL_V1 = 'https://api.snyk.io/v1'
 BASE_URL_REST = 'https://api.snyk.io'
 REST_VERSION = "2024-10-15"
 
+ALLOWED_INTEGRATION_TYPES = ['github', 'github-enterprise' 'gitlab', 'bitbucket', 'azure-repos']   
+
 headers = {
     'Authorization': f'token {API_TOKEN}',
     'Content-Type': 'application/json'
@@ -61,7 +63,7 @@ def reimport_target(org_id, target, target_reference):
 
     print(f'Reimporting target {target["id"]}')
     
-    if len(target['attributes']['display_name'].split('/')) > 1 and target['relationships']['integration']['data']['attributes']['integration_type'] != 'cli':
+    if len(target['attributes']['display_name'].split('/')) > 1 and target['relationships']['integration']['data']['attributes']['integration_type'] in ALLOWED_INTEGRATION_TYPES:
 
         data = {
             'target': {
